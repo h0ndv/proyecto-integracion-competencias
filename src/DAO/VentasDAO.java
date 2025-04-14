@@ -1,4 +1,4 @@
-package Modelo;
+package DAO;
 
 import java.sql.ResultSet;
 import java.sql.Connection;
@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Conexion.Conexion;
+import Modelo.Ventas;
 
 public class VentasDAO {
     public void agregarVenta(Ventas venta) {

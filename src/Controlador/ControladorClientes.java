@@ -1,9 +1,10 @@
 package Controlador;
 
 import Modelo.Clientes;
-import Modelo.ClientesDAO;
 
 import java.util.List;
+
+import DAO.ClientesDAO;
 
 public class ControladorClientes {
     private ClientesDAO clientesDAO;
@@ -26,7 +27,7 @@ public class ControladorClientes {
             return "El numero de celular debe tener 8 digitos";
         }
 
-        if (!Controlador.esCorreoValido(correo)) {
+        if (!Controlador.validarCorreo(correo)) {
             return "El correo no es valido";
         }
         

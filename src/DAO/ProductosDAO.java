@@ -1,6 +1,8 @@
-package Modelo;
+package DAO;
 
 import Conexion.Conexion;
+import Modelo.Productos;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

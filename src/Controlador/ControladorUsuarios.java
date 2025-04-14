@@ -1,12 +1,12 @@
 package Controlador;
 
 import Modelo.Usuarios;
-import Modelo.UsuariosDAO;
 
 import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
+import DAO.UsuariosDAO;
 import Vista.Vista;
 
 public class ControladorUsuarios {

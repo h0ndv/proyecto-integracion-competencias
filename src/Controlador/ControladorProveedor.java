@@ -1,9 +1,10 @@
 package Controlador;
 
 import Modelo.Proveedores;
-import Modelo.ProveedoresDAO;
 
 import java.util.List;
+
+import DAO.ProveedoresDAO;
 
 public class ControladorProveedor {
     private ProveedoresDAO proveedoresDAO;
@@ -25,7 +26,7 @@ public class ControladorProveedor {
             } 
 
             // Validar correo
-            if (!Controlador.esCorreoValido(correo)) {
+            if (!Controlador.validarCorreo(correo)) {
                 return "El correo no es valido";
             }
 

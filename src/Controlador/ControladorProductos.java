@@ -1,11 +1,12 @@
 package Controlador;
 
 import Modelo.Productos;
-import Modelo.ProductosDAO;
 
 import java.util.List;
 
 import javax.swing.JComboBox;
+
+import DAO.ProductosDAO;
 
 public class ControladorProductos {
     private final ProductosDAO productosDAO = new ProductosDAO();
