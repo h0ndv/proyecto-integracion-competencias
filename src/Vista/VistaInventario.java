@@ -207,39 +207,53 @@ public class VistaInventario extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        if (validarCampos()) {
+        // Validar los campos
+        String mensaje = validarCampos();
+        if (mensaje != null) {
+            JOptionPane.showMessageDialog(null, mensaje);
+            return;
+        }
+        
+        try {
             String nombreProducto = txtProducto.getText();
             String precioProducto = txtPrecio.getText();
             String categoriaProducto = jComboCatergoria.getSelectedItem().toString();
             String cantidadProducto = txtCantidad.getText();
             
-            String categoriaSeleccionada = jComboCatergoria.getSelectedItem().toString();
-            switch (categoriaSeleccionada) {
+            String categoriaSeleccionada = "";
+            switch (categoriaProducto) {
                 case "Procesador":
-                    categoriaProducto = "1";
+                    categoriaSeleccionada = "1";
                     break;
                 case "Placa Madre":
-                    categoriaProducto = "2";
+                    categoriaSeleccionada = "2";
                     break;
                 case "Memoria RAM":
-                    categoriaProducto = "3";
+                    categoriaSeleccionada = "3";
                     break;
                 case "Fuente de Poder":
-                    categoriaProducto = "4";
+                    categoriaSeleccionada = "4";
                     break;
                 case "Gabinete":
-                    categoriaProducto = "5";
+                    categoriaSeleccionada = "5";
                     break;
             }
 
+            // crear objeto tipo producto
+            Productos producto = new Productos();
+            producto.setNombreProducto(nombreProducto);
+            producto.setPrecio(Integer.parseInt(precioProducto));
+            producto.setCantidad(Integer.parseInt(cantidadProducto));
+            producto.setCategoria(Integer.parseInt(categoriaSeleccionada));
+
             // Agregar el producto a la base de datos
-            String productoControlador = controladorProductos.validarProducto(nombreProducto, precioProducto, cantidadProducto, categoriaProducto);
+            String productoControlador = controladorProductos.validarProducto(nombreProducto, precioProducto, cantidadProducto, categoriaSeleccionada);
             if (productoControlador != null) {
                 JOptionPane.showMessageDialog(null, productoControlador);
                 limpiarCampos();
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "Error al agregar el producto");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al agregar el producto " + e.getMessage());
         }
         
         // Actualizar la tabla
@@ -287,7 +301,9 @@ public class VistaInventario extends javax.swing.JFrame {
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // Validar los campos
-        if (!validarCampos()) {
+        String mensaje = validarCampos();
+        if (mensaje != null) {
+            JOptionPane.showMessageDialog(null, mensaje);
             return;
         }
         
@@ -371,15 +387,29 @@ public class VistaInventario extends javax.swing.JFrame {
     }
 
     // Funcion para validad los campos
-    public boolean validarCampos() {
-        if (controlador.verificarCampoVacio(txtProducto, "El campo producto esta vacio") &&
-            controlador.verificarCampoVacio(txtPrecio, "El campo precio esta vacio") &&
-            controlador.verificarCampoVacio(txtCantidad, "El campo cantidad esta vacio") &&
-            controlador.validarNumero(txtPrecio, "El campo precio debe ser un numero mayor a 0") &&
-            controlador.validarNumero(txtCantidad, "El campo cantidad debe ser un numero mayor a 0")) {
-            return true;
+    public String validarCampos() {
+
+        if (!Controlador.verificarCampoVacio(txtProducto.getText())) {
+            return "El campo Nombre del producto esta vacio.";
         }
-        return false;
+
+        if (!Controlador.verificarCampoVacio(txtPrecio.getText())) {
+            return "El campo Cantidad del producto esta vacio.";
+        }
+
+        if (!Controlador.verificarCampoVacio(txtCantidad.getText())) {
+            return "El campo Cantidad del producto esta vacio.";
+        }
+
+        if (!Controlador.validarNumero(txtPrecio.getText())) {
+            return "El campo Precio debe ser un numero mayor a 0.";
+        }
+
+        if (!Controlador.validarNumero(txtCantidad.getText())) {
+            return "El campo Cantidad debe ser un numero mayor a 0.";
+        }
+
+        return null;
     }
 
     public void limpiarCampos() {

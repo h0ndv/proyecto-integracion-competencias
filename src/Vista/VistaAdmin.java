@@ -972,7 +972,9 @@ public class VistaAdmin extends javax.swing.JFrame {
 
     private void BtnAgregarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAgregarClienteActionPerformed
         // Validar los campos
-        if (!validarCamposClientes()) {
+        String mensaje = validarCamposClientes();
+        if (mensaje != null) {
+            JOptionPane.showMessageDialog(null, mensaje);
             return;
         }
 
@@ -1016,7 +1018,9 @@ public class VistaAdmin extends javax.swing.JFrame {
 
     private void BtnAgregarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAgregarUsuarioActionPerformed
         // Validar los campos
-        if (!validarCamposUsuarios()) {
+        String mensaje = validarCamposUsuarios();
+        if (mensaje != null) {
+            JOptionPane.showMessageDialog(null, mensaje);
             return;
         }
 
@@ -1128,7 +1132,9 @@ public class VistaAdmin extends javax.swing.JFrame {
 
     private void BtnModificarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnModificarUsuarioActionPerformed
         // Validar los campos
-        if (!validarCamposUsuarios()) {
+        String mensaje = validarCamposUsuarios();
+        if (mensaje != null) {
+            JOptionPane.showMessageDialog(null, mensaje);
             return;
         }
 
@@ -1178,7 +1184,9 @@ public class VistaAdmin extends javax.swing.JFrame {
 
     private void BtnModificarProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnModificarProveedorActionPerformed
         // Validar los campos
-        if (!validarCamposProveedor()) {
+        String mensaje = validarCamposProveedor();
+        if (mensaje != null) {
+            JOptionPane.showMessageDialog(null, mensaje);
             return;
         }
 
@@ -1265,7 +1273,9 @@ public class VistaAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void BtnAgregarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAgregarProductoActionPerformed
-        if (!validarCamposProductos()) {
+        String mensaje = validarCamposProductos();
+        if (mensaje != null) {
+            JOptionPane.showMessageDialog(null, mensaje);
             return;
         }
         
@@ -1386,55 +1396,117 @@ public class VistaAdmin extends javax.swing.JFrame {
     }
 
     // Funcion para vaalidar los campos
-    public boolean validarCamposProveedor() {
-        if (controlador.verificarCampoVacio(TxtNombreProveedor, "El campo nombre del proveedor esta vacio") &&
-            controlador.verificarCampoVacio(TxtEmpresa, "El campo empresa del proveedor esta vacio") &&
-            controlador.verificarCampoVacio(TxtContactoProveedor, "El campo contacto del proveedor esta vacio") &&
-            controlador.verificarCampoVacio(TxtCorreoProveedor, "El campo correo del proveedor esta vacio")) {
-            return true;
+    public String validarCamposProveedor() {
+        if (!Controlador.verificarCampoVacio(TxtNombreProveedor.getText())) {
+            return "El campo Nombre del proveedor esta vacio";
         }
-        return false;
+
+        if (!Controlador.verificarCampoVacio(TxtEmpresa.getText())) {
+            return "El campo Empresa del proveedor esta vacio";
+        }
+
+        if (!Controlador.verificarCampoVacio(TxtContactoProveedor.getText())) {
+            return "El campo Contacto del proveedor esta vacio";
+        }
+
+        if (!Controlador.verificarCampoVacio(TxtCorreoProveedor.getText())) {
+            return "El campo Correo del proveedor esta vacio";
+        }
+
+        if (!Controlador.validarCorreo(TxtCorreoProveedor.getText())) {
+            return "El correo ingresado no es valido.";
+        }
+
+        if (!Controlador.validarNumero(TxtContactoProveedor.getText())) {
+            return "El numero ingresado no es valido.";
+        }
+
+        return null;
     }
 
     // Funcion para validar los campos de los productos
-    public boolean validarCamposProductos() {
-        if (controlador.verificarCampoVacio(TxtNombreProducto, "El campo nombre del producto esta vacio") &&
-            controlador.verificarCampoVacio(TxtPrecio, "El campo precio del producto esta vacio") &&
-            controlador.verificarCampoVacio(TxtCantidad, "El campo cantidad del producto esta vacio")) {
-            return true;
-        }
-        return false;
+    public String validarCamposProductos() {
+       if (!Controlador.verificarCampoVacio(TxtNombreProducto.getText())) {
+            return "El campo Nombre del producto esta vacio";
+       }
+
+       if (!Controlador.verificarCampoVacio(TxtPrecioUnitario.getText())) {
+            return "El campo Precio del producto esta vacio";
+       }
+
+       if (!Controlador.verificarCampoVacio(TxtStockProducto.getText())) {
+            return "El campo Cantidad del producto esta vacio";
+       }
+
+       if (!Controlador.validarNumero(TxtCantidad.getText())) {
+            return "Ingresa solo numeros mayor a 0 en el campo Cantidad.";
+       }
+
+       if (Controlador.verificarCampoVacio(comboBoxStock.getSelectedItem().toString())) {
+            return "El campo Categoria del producto esta vacio";
+       }
+
+       if (!Controlador.validarNumero(TxtPrecioUnitario.getText())) {
+            return "Ingresa solo numeros en el campo Precio.";
+       }
+
+       if (!Controlador.validarNumero(TxtCantidad.getText())) {
+            return "Ingresa solo numeros mayor a 0 en el campo cantidad";
+       }
+        return null;
     }
 
     // Funcion para validar los campos de los usuarios
-    public boolean validarCamposUsuarios() {
-        if (controlador.verificarCampoVacio(TxtNombreUsuario, "El campo nombre del usuario esta vacio") &&
-            controlador.verificarCampoVacio(TxtRutUsuario, "El campo rut del usuario esta vacio") &&
-            controlador.verificarCampoVacio(TxtCorreoUsuario, "El campo correo del usuario esta vacio")) {
-            
-            if (!Controlador.validarRut(TxtRutUsuario.getText())) {
-                JOptionPane.showMessageDialog(null, "El RUT ingresado no es valido.", "Error", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
-            return true;
+    public String validarCamposUsuarios() {
+        if (!Controlador.verificarCampoVacio(TxtNombreUsuario.getText())) {
+            return "El campo nombre del usuario esta vacio";
         }
-        return false;
+
+        if (!Controlador.verificarCampoVacio(TxtRutUsuario.getText())) {
+            return "El campo rut del usuario esta vacio";
+        }
+
+        if (!Controlador.verificarCampoVacio(TxtCorreoUsuario.getText())) {
+            return "El campo correo del usuario esta vacio";
+        }
+
+        if (Controlador.validarRut(TxtRutUsuario.getText()) != null) {
+            return "El RUT ingresado no es valido.";
+        }
+
+        if (!Controlador.validarCorreo(TxtCorreoUsuario.getText())) {
+            return "El correo ingresado no es valido.";
+        }
+
+        return null;
     }
 
     // Funcion para validar los campos de los clientes
-    public boolean validarCamposClientes() {
-        if (controlador.verificarCampoVacio(TxtNombreCliente, "El campo nombre del cliente esta vacio") &&
-            controlador.verificarCampoVacio(TxtRutCliente, "El campo rut del cliente esta vacio") &&
-            controlador.verificarCampoVacio(TxtContactoCliente, "El campo contacto del cliente esta vacio") &&
-            controlador.verificarCampoVacio(TxtCorreoCliente, "El campo correo del cliente esta vacio")) {
-
-            if (!Controlador.validarRut(TxtRutCliente.getText())) {
-                JOptionPane.showMessageDialog(null, "El RUT ingresado no es valido.", "Error", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
-            return true;
+    public String validarCamposClientes() {
+        if (!Controlador.verificarCampoVacio(TxtNombreCliente.getText())) {
+            return "El campo Nombre del cliente esta vacio.";
         }
-        return false;
+
+        if (!Controlador.verificarCampoVacio(TxtRutCliente.getText())) {
+            return "El campo RUT del cliente esta vacio.";
+        }
+
+        if (!Controlador.verificarCampoVacio(TxtContactoCliente.getText())) {
+            return "El campo Contaco del cliente esta vacio";
+        }
+
+        if (!Controlador.verificarCampoVacio(TxtCorreoCliente.getText())) {
+            return "El campo Correo del cliente esta vacio. ";
+        }
+
+        if (Controlador.validarRut(TxtRutCliente.getText()) != null) {
+            return "El RUT del cliente ingresado no es valido.";
+        }
+
+        if (!Controlador.validarCorreo(TxtCorreoCliente.getText())) {
+            return "El Correo del cliente ingresado no es valido.";
+        }
+        return null;
     }
 
     /**

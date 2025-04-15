@@ -1,33 +1,27 @@
 package Controlador;
 
-import javax.swing.JTextField;
-import javax.swing.JOptionPane;
-
 public class Controlador {
 
     public Controlador () { }
 
     // Metodo para verificar si el campo esta vacio
-    public boolean verificarCampoVacio(JTextField campo, String mensaje) {
-        if (campo.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, mensaje);
-            return false;
+    public static boolean verificarCampoVacio(String mensaje) {
+        if (mensaje.isEmpty()) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     // Metodo para validar ingreso solo numeros y si es mayor a 0
-    public boolean validarNumero(JTextField campo, String mensaje) {
-        if (!campo.getText().matches("[0-9]+")) {
-            JOptionPane.showMessageDialog(null, mensaje);
-            return false;
+    public static boolean validarNumero(String mensaje) {
+        if (!mensaje.matches("[0-9]+")) {
+            return true;
         }
 
-        if (Integer.parseInt(campo.getText()) <= 0) {
-            JOptionPane.showMessageDialog(null, mensaje);
-            return false;
+        if (Integer.parseInt(mensaje) <= 0) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     // Metodo para validar correo
@@ -37,25 +31,32 @@ public class Controlador {
     }
 
     // Metodo para validar el rut ingresado
-    public static boolean validarRut(String rut) {
-        if (rut == null || rut.length() < 8 || rut.length() > 9) 
-            return false;
-
+    public static String validarRut(String rut) {
+        if (rut == null || rut.isEmpty()) {
+            return "El RUT no puede estar vacio";
+        }
+    
         rut = rut.replaceAll("[^0-9Kk]", "").toUpperCase();
-        if (rut.length() < 8 || rut.length() > 9)
-            return false;
-
+    
+        if (rut.length() < 8 || rut.length() > 9) {
+            return "El RUT debe tener entre 8 y 9 digitos";
+        }
+    
         String cuerpo = rut.substring(0, rut.length() - 1);
         char dv = rut.charAt(rut.length() - 1);
-
+    
         try {
             int rutNum = Integer.parseInt(cuerpo);
-            return calcularDV(rutNum) == dv;
-
+            char dvCalculado = calcularDV(rutNum);
+    
+            if (dv != dvCalculado) {
+                return "El digito verificador no es valido (deberia ser " + dvCalculado + ")";
+            }
         } catch (NumberFormatException e) {
-            System.out.println("Error al convertir el rut a numero: " + e.getMessage());
-            return false;
+            return "El cuerpo del RUT debe contener solo numeros.";
         }
+    
+        return null;
     }
 
     // Metodo para calcular el digito verifiacador del rut
