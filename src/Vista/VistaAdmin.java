@@ -1411,6 +1411,11 @@ public class VistaAdmin extends javax.swing.JFrame {
         if (controlador.verificarCampoVacio(TxtNombreUsuario, "El campo nombre del usuario esta vacio") &&
             controlador.verificarCampoVacio(TxtRutUsuario, "El campo rut del usuario esta vacio") &&
             controlador.verificarCampoVacio(TxtCorreoUsuario, "El campo correo del usuario esta vacio")) {
+            
+            if (!Controlador.validarRut(TxtRutUsuario.getText())) {
+                JOptionPane.showMessageDialog(null, "El RUT ingresado no es valido.", "Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
             return true;
         }
         return false;
@@ -1422,6 +1427,11 @@ public class VistaAdmin extends javax.swing.JFrame {
             controlador.verificarCampoVacio(TxtRutCliente, "El campo rut del cliente esta vacio") &&
             controlador.verificarCampoVacio(TxtContactoCliente, "El campo contacto del cliente esta vacio") &&
             controlador.verificarCampoVacio(TxtCorreoCliente, "El campo correo del cliente esta vacio")) {
+
+            if (!Controlador.validarRut(TxtRutCliente.getText())) {
+                JOptionPane.showMessageDialog(null, "El RUT ingresado no es valido.", "Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
             return true;
         }
         return false;
