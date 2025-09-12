@@ -1,7 +1,7 @@
 package Modelo;
 
 public class Usuarios {
-    int rut;
+    String rut;
     String nombre;
     int pin;
     String correo;
@@ -11,7 +11,7 @@ public class Usuarios {
     public Usuarios() {
     }
 
-    public Usuarios(int rut, String nombre, int pin, String correo, int id_cargo, String cargo) {
+    public Usuarios(String rut, String nombre, int pin, String correo, int id_cargo, String cargo) {
         this.rut = rut;
         this.nombre = nombre;
         this.pin = pin;
@@ -21,11 +21,11 @@ public class Usuarios {
     }
     
     // Getters y Setters
-    public int getRutUsuario() {
+    public String getRutUsuario() {
         return rut;
     }
 
-    public void setRutUsuario(int rutUsuario) {
+    public void setRutUsuario(String rutUsuario) {
         this.rut = rutUsuario;
     }
 

@@ -1116,7 +1116,7 @@ public class VistaAdmin extends javax.swing.JFrame {
 
                 // Crear objeto tipo usuario
                 Usuarios usuario = new Usuarios();
-                usuario.setRutUsuario(rutUsuario);
+                usuario.setRutUsuario(String.valueOf(rutUsuario));
 
                 // Eliminar usuario de la base de datos
                 controladorUsuarios.eliminarUsuario(usuario);
@@ -1164,7 +1164,7 @@ public class VistaAdmin extends javax.swing.JFrame {
                 
             // Crear objeto tipo usuario
             Usuarios usuario = new Usuarios();
-            usuario.setRutUsuario(Integer.parseInt(rutUsuario));
+            usuario.setRutUsuario(String.valueOf(rutUsuario));
             usuario.setNombre(nombreUsuario);
             usuario.setCorreo(correoUsuario);
             usuario.setId_cargo(cargoInt);

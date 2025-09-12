@@ -1,6 +1,7 @@
 package Controlador;
 
 import Modelo.Usuarios;
+import Utils.ValidacionRut;
 
 import java.util.List;
 import javax.swing.JComboBox;
@@ -18,21 +19,25 @@ public class ControladorUsuarios {
 
     // Metodo para validar inicio de sesion
     public boolean validarUsuario(String rut, String pin) {
-        // Validaciones
-        // Ingresar solo numeros en los campos
-        if (!rut.matches("[0-9]+") || !pin.matches("[0-9]+")) {
-            JOptionPane.showMessageDialog(null, "Debe ingresar solo numeros");
+        // Validar RUT
+        String errorRut = ValidacionRut.validarRutConMensaje(rut);
+        if (errorRut != null) {
+            JOptionPane.showMessageDialog(null, errorRut);
             return false;
         }
         
-        // Se convierten las variables numeroCuenta y pin a tipo int
+        // Validar PIN (solo números)
+        if (!pin.matches("[0-9]+")) {
+            JOptionPane.showMessageDialog(null, "El PIN debe contener solo números");
+            return false;
+        }
+        
         try {
-            int Rut = Integer.parseInt(rut);
             int Pin = Integer.parseInt(pin);
 
             // Crear un objeto tipo cuenta y setear parametros de la cuenta
             Usuarios usuarios = new Usuarios();
-            usuarios.setRutUsuario(Rut);
+            usuarios.setRutUsuario(rut);
             usuarios.setPin(Pin);
 
             // Validar el usuario en la base de datos 
@@ -45,7 +50,7 @@ public class ControladorUsuarios {
             }
             
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Debe ingresar solo numeros");
+            JOptionPane.showMessageDialog(null, "El PIN debe contener solo números");
             return false;
         }
         System.out.println("ControladorUsuarios.validarUsuario() - Datos correctos" + rut + " " + pin);
@@ -57,8 +62,10 @@ public class ControladorUsuarios {
             return "Debe completar todos los campos";
         }
 
-        if (rut.length() != 9) {
-            return "El rut debe tener 9 digitos";
+        // Validar RUT usando el nuevo validador
+        String errorRut = ValidacionRut.validarRutConMensaje(rut);
+        if (errorRut != null) {
+            return errorRut;
         }
 
         if (cargo != 1 && cargo != 2 && cargo != 3) {
@@ -70,12 +77,11 @@ public class ControladorUsuarios {
         }
 
         try {
-            int rutInt = Integer.parseInt(rut);
             int claveInt = Integer.parseInt(clave);
 
             Usuarios usuarios = new Usuarios();
             usuarios.setNombre(nombre);
-            usuarios.setRutUsuario(rutInt);
+            usuarios.setRutUsuario(rut);
             usuarios.setPin(claveInt);
             usuarios.setCorreo(correo);
             usuarios.setId_cargo(cargo);
@@ -85,7 +91,7 @@ public class ControladorUsuarios {
             return null;
             
         } catch (NumberFormatException e) {
-            return "Debe ingresar solo numeros";
+            return "El PIN debe contener solo números";
         } 
     }
 

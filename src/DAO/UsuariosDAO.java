@@ -12,7 +12,7 @@ import java.util.List;
 import javax.swing.JComboBox;
 
 public class UsuariosDAO {
-    private static int userLogged = -1;
+    private static String userLogged = null;
     private static String nombre;
     private static int cargo = 0;
 
@@ -27,7 +27,7 @@ public class UsuariosDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
            
             // Se setean los parametros de la consulta
-            preparedStatement.setInt(1, usuarios.getRutUsuario());
+            preparedStatement.setString(1, usuarios.getRutUsuario());
             preparedStatement.setInt(2, usuarios.getPin());
             
             // Se ejecuta la consulta
@@ -35,7 +35,7 @@ public class UsuariosDAO {
             
             // Si el usuario existe se inicia sesion
             if (resulSet.next()) {
-                userLogged = resulSet.getInt("rut");
+                userLogged = resulSet.getString("rut");
                 nombre = resulSet.getString("nombre");
                 cargo = resulSet.getInt("id_cargo");
                 System.out.println("CuentaDAO.iniciarsesion() - Sesion iniciada. N° Cuenta: " + userLogged + " Nombre: " + nombre + " Cargo: " + cargo);
@@ -66,7 +66,7 @@ public class UsuariosDAO {
             // Setear los valores de la consulta
             preparedStatement.setInt(1, usuarios.getId_cargo());
             preparedStatement.setString(2, usuarios.getNombre());
-            preparedStatement.setInt(3, usuarios.getRutUsuario());
+            preparedStatement.setString(3, usuarios.getRutUsuario());
             preparedStatement.setInt(4, usuarios.getPin());
             preparedStatement.setString(5, usuarios.getCorreo());
             
@@ -91,6 +91,7 @@ public class UsuariosDAO {
             preparedStatement.setInt(1, usuarios.getId_cargo());
             preparedStatement.setString(2, usuarios.getNombre());
             preparedStatement.setInt(3, usuarios.getRutUsuario());
+            preparedStatement.setString(3, usuarios.getRutUsuario());
             preparedStatement.setInt(4, usuarios.getPin());
             preparedStatement.setString(5, usuarios.getCorreo());
 
@@ -110,7 +111,7 @@ public class UsuariosDAO {
         try {
             Connection connection = Conexion.getInstance().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, userLogged);
+            preparedStatement.setString(1, userLogged);
 
             // Se ejecuta la consulta
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -163,7 +164,7 @@ public class UsuariosDAO {
             while (resultSet.next()) {
                 Usuarios usuarios = new Usuarios();
                 usuarios.setNombre(resultSet.getString("nombre"));
-                usuarios.setRutUsuario(resultSet.getInt("rut"));
+                usuarios.setRutUsuario(resultSet.getString("rut"));
                 usuarios.setPin(resultSet.getInt("pin"));
                 usuarios.setCorreo(resultSet.getString("correo"));
                 usuarios.setCargo(resultSet.getString("cargo"));
@@ -186,7 +187,7 @@ public class UsuariosDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             
             // Setear el valor de la consulta
-            preparedStatement.setInt(1, usuarios.getRutUsuario());
+            preparedStatement.setString(1, usuarios.getRutUsuario());
 
             // Ejecutar la consulta
             preparedStatement.executeUpdate();
@@ -208,9 +209,9 @@ public class UsuariosDAO {
             // Setear los valores de la consulta
             preparedStatement.setInt(1, usuarios.getId_cargo());
             preparedStatement.setString(2, usuarios.getNombre());
-            preparedStatement.setInt(3, usuarios.getRutUsuario());
+            preparedStatement.setString(3, usuarios.getRutUsuario());
             preparedStatement.setString(4, usuarios.getCorreo());
-            preparedStatement.setInt(5, usuarios.getRutUsuario());
+            preparedStatement.setString(5, usuarios.getRutUsuario());
             
             // Ejecutar la consulta
             preparedStatement.executeUpdate();
@@ -223,8 +224,8 @@ public class UsuariosDAO {
 
     // Metodo para cerrar sesion
     public void cerrarSesion() {
-        if (userLogged != -1) {
-            userLogged = -1;
+        if (userLogged != null) {
+            userLogged = null;
             nombre = "";
             cargo = -1;
             System.out.println("UsuariosDAO.cerrarseion(): Sesion cerrada. N° Cuenta:" + userLogged);

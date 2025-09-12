@@ -1,6 +1,7 @@
 package Controlador;
 
 import Modelo.Clientes;
+import Utils.ValidacionRut;
 
 import java.util.List;
 
@@ -19,8 +20,9 @@ public class ControladorClientes {
             return "Debe completar todos los campos";
         }
 
-        if (rut.length() != 9) {
-            return "El rut debe tener 9 digitos";
+        String errorRut = ValidacionRut.validarRutConMensaje(rut);
+        if (errorRut != null) {
+            return errorRut;
         }
 
         if (celular.length() != 8) {
