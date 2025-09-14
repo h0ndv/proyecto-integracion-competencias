@@ -1,17 +1,21 @@
 package Vista;
 
 import Controlador.Controlador;
+import Controlador.ControladorAsistencia;
 import Controlador.ControladorClientes;
 import Controlador.ControladorProductos;
 import Controlador.ControladorProveedor;
 import Controlador.ControladorUsuarios;
-
+import Modelo.Asistencia;
 import Modelo.Clientes;
 import Modelo.Productos;
 import Modelo.Proveedores;
 import Modelo.Usuarios;
 
+import java.awt.Font;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -74,6 +78,10 @@ public class VistaAdmin extends javax.swing.JFrame {
         TxtListaCliente = new javax.swing.JLabel();
         btnReporte = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        btnReporteAsistencia = new javax.swing.JButton();
+        btnReporteAtrasos = new javax.swing.JButton();
+        btnReporteSalidasAnticipadas = new javax.swing.JButton();
+        btnReporteInasistencias = new javax.swing.JButton();
         PanelPersonal = new javax.swing.JPanel();
         TxtTitulo = new javax.swing.JLabel();
         LabelNombrePersonal = new javax.swing.JLabel();
@@ -156,6 +164,7 @@ public class VistaAdmin extends javax.swing.JFrame {
         jMenuItem1.setText("jMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(658, 518));
 
         VistaAdministrador.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -218,6 +227,34 @@ public class VistaAdmin extends javax.swing.JFrame {
             }
         });
 
+        btnReporteAsistencia.setText("Reporte Asistencias");
+        btnReporteAsistencia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReporteAsistenciaActionPerformed(evt);
+            }
+        });
+
+        btnReporteAtrasos.setText("Reporte Atrasos");
+        btnReporteAtrasos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReporteAtrasosActionPerformed(evt);
+            }
+        });
+
+        btnReporteSalidasAnticipadas.setText("Reporte Salidas Anticipadas");
+        btnReporteSalidasAnticipadas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReporteSalidasAnticipadasActionPerformed(evt);
+            }
+        });
+
+        btnReporteInasistencias.setText("Reporte Inasistencias");
+        btnReporteInasistencias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReporteInasistenciasActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout PanelinicioLayout = new javax.swing.GroupLayout(Panelinicio);
         Panelinicio.setLayout(PanelinicioLayout);
         PanelinicioLayout.setHorizontalGroup(
@@ -239,12 +276,20 @@ public class VistaAdmin extends javax.swing.JFrame {
                             .addGroup(PanelinicioLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addComponent(PanelTablaProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 598, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 14, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(PanelinicioLayout.createSequentialGroup()
                         .addGap(56, 56, 56)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(70, 70, 70)
                         .addComponent(TxtRegistroVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnReporteAsistencia)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnReporteAtrasos)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnReporteSalidasAnticipadas)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnReporteInasistencias)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnReporte)
                         .addGap(53, 53, 53)))
@@ -264,7 +309,12 @@ public class VistaAdmin extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(PanelinicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(TxtRegistroVentas)
-                    .addComponent(btnReporte)
+                    .addGroup(PanelinicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnReporte)
+                        .addComponent(btnReporteAsistencia)
+                        .addComponent(btnReporteAtrasos)
+                        .addComponent(btnReporteSalidasAnticipadas)
+                        .addComponent(btnReporteInasistencias))
                     .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(PanelTablaProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1326,6 +1376,208 @@ public class VistaAdmin extends javax.swing.JFrame {
         mostrarProductosEnTabla(listaProductos);
     }//GEN-LAST:event_BtnAgregarProductoActionPerformed
 
+    // Metodo para mostrar reporte de asistencias 
+    private void btnReporteAsistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteAsistenciaActionPerformed
+        // Crear el mensaje del reporte con Stringbuilder
+        StringBuilder reporte = new StringBuilder();
+        
+        ControladorAsistencia controladorAsistencia = new ControladorAsistencia();
+
+        // Obtener las asistencias
+        List<Asistencia> listaAsistencias = controladorAsistencia.obtenerTodasAsistencias();
+
+        // Lista vacia de usuarios
+        if (listaAsistencias.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No hay asistencias para mostrar");
+            return;
+        }
+
+        // Agregar la cantidad de asistencias
+        reporte.append("Cantidad de asistencias: " + listaAsistencias.size() + "\n");
+
+        // Agregar los datos de las asistencias
+        for (int i = 0; i < listaAsistencias.size(); i++) {
+            reporte.append("Usuario: " + listaAsistencias.get(i).getNombreUsuario() + " - " + listaAsistencias.get(i).getFecha() + " - " + listaAsistencias.get(i).getHoraEntrada() + " - " + listaAsistencias.get(i).getHoraSalida() + " - " + listaAsistencias.get(i).getEstado() + "\n");
+        }
+        
+        // Mostrar el reporte en una ventana JFRAME
+        JFrame ventanaReporte = new JFrame("Reporte");
+        ventanaReporte.setSize(600, 600);
+        ventanaReporte.setLocationRelativeTo(null);
+        ventanaReporte.setVisible(true);
+        
+        JTextArea txtAreaReporte = new JTextArea(reporte.toString());
+        JScrollPane scrollPane = new JScrollPane(txtAreaReporte);
+        ventanaReporte.add(scrollPane);
+        
+    }//GEN-LAST:event_btnReporteAsistenciaActionPerformed
+
+    // RE-01: Metodo para mostrar reporte de atrasos
+    private void btnReporteAtrasosActionPerformed(java.awt.event.ActionEvent evt) {
+        StringBuilder reporte = new StringBuilder();
+        reporte.append("=== REPORTE DE ATRASOS ===\n");
+        reporte.append("Usuarios que llegaron despues de las 9:30 AM\n\n");
+        
+        ControladorAsistencia controladorAsistencia = new ControladorAsistencia();
+        List<Asistencia> listaAsistencias = controladorAsistencia.obtenerTodasAsistencias();
+        
+        int contadorAtrasos = 0;
+        
+        for (Asistencia asistencia : listaAsistencias) {
+            if (asistencia.getHoraEntrada() == null || asistencia.getHoraEntrada().isEmpty()) {
+                continue;
+            }
+            
+            // Parsear la hora de entrada (formato HH:mm:ss)
+            String[] horaEntrada = asistencia.getHoraEntrada().split(":");
+            if (horaEntrada.length < 2) {
+                continue;
+            }
+            
+            int hora = Integer.parseInt(horaEntrada[0]);
+            int minutos = Integer.parseInt(horaEntrada[1]);
+            
+            // Verificar si llego despues de las 9:30 AM
+            if (hora < 9 || (hora == 9 && minutos <= 30)) {
+                continue;
+            }
+            
+            contadorAtrasos++;
+            reporte.append("• Usuario: " + asistencia.getNombreUsuario() + "\n");
+            reporte.append("  Fecha: " + asistencia.getFecha() + "\n");
+            reporte.append("  Hora de entrada: " + asistencia.getHoraEntrada() + "\n");
+            reporte.append("  Estado: " + asistencia.getEstado() + "\n\n");
+        }
+        
+        if (contadorAtrasos == 0) {
+            reporte.append("No se encontraron atrasos en el periodo consultado.\n");
+            mostrarReporte("Reporte de Atrasos", reporte.toString());
+            return;
+        }
+        
+        reporte.append("Total de atrasos encontrados: " + contadorAtrasos + "\n");
+        mostrarReporte("Reporte de Atrasos", reporte.toString());
+    }
+
+    // RE-02: Metodo para mostrar reporte de salidas anticipadas (antes de 17:30 PM)
+    private void btnReporteSalidasAnticipadasActionPerformed(java.awt.event.ActionEvent evt) {
+        StringBuilder reporte = new StringBuilder();
+        reporte.append("=== REPORTE DE SALIDAS ANTICIPADAS ===\n");
+        reporte.append("Usuarios que salieron antes de las 17:30 PM\n\n");
+        
+        ControladorAsistencia controladorAsistencia = new ControladorAsistencia();
+        List<Asistencia> listaAsistencias = controladorAsistencia.obtenerTodasAsistencias();
+        
+        int contadorSalidasAnticipadas = 0;
+        
+        for (Asistencia asistencia : listaAsistencias) {
+            if (asistencia.getHoraSalida() == null || asistencia.getHoraSalida().isEmpty() || 
+                asistencia.getHoraSalida().equals("N/A")) {
+                continue;
+            }
+            
+            // Parsear la hora de salida
+            String[] horaSalida = asistencia.getHoraSalida().split(":");
+            if (horaSalida.length < 2) {
+                continue;
+            }
+            
+            int hora = Integer.parseInt(horaSalida[0]);
+            int minutos = Integer.parseInt(horaSalida[1]);
+            
+            // Verificar si salio antes de las 17:30 PM
+            if (hora >= 17 && (hora > 17 || minutos >= 30)) {
+                continue;
+            }
+            
+            contadorSalidasAnticipadas++;
+            reporte.append("• Usuario: " + asistencia.getNombreUsuario() + "\n");
+            reporte.append("  Fecha: " + asistencia.getFecha() + "\n");
+            reporte.append("  Hora de salida: " + asistencia.getHoraSalida() + "\n");
+            reporte.append("  Estado: " + asistencia.getEstado() + "\n\n");
+        }
+        
+        if (contadorSalidasAnticipadas == 0) {
+            reporte.append("No se encontraron salidas anticipadas en el periodo consultado.\n");
+            mostrarReporte("Reporte de Salidas Anticipadas", reporte.toString());
+            return;
+        }
+        
+        reporte.append("Total de salidas anticipadas encontradas: " + contadorSalidasAnticipadas + "\n");
+        mostrarReporte("Reporte de Salidas Anticipadas", reporte.toString());
+    }
+
+    // RE-03: Metodo para mostrar reporte de inasistencias (sin entrada ni salida)
+    private void btnReporteInasistenciasActionPerformed(java.awt.event.ActionEvent evt) {
+        StringBuilder reporte = new StringBuilder();
+        reporte.append("=== REPORTE DE INASISTENCIAS ===\n");
+        reporte.append("Usuarios que no registraron entrada ni salida\n\n");
+        
+        ControladorAsistencia controladorAsistencia = new ControladorAsistencia();
+        List<Asistencia> listaAsistencias = controladorAsistencia.obtenerTodasAsistencias();
+        
+        // Obtener todas las fechas unicas
+        Set<String> fechasUnicas = new HashSet<>();
+        for (Asistencia asistencia : listaAsistencias) {
+            fechasUnicas.add(asistencia.getFecha());
+        }
+        
+        // Obtener todos los usuarios unicos
+        Set<String> usuariosUnicos = new HashSet<>();
+        for (Asistencia asistencia : listaAsistencias) {
+            usuariosUnicos.add(asistencia.getNombreUsuario());
+        }
+        
+        int contadorInasistencias = 0;
+        
+        // Para cada fecha, verificar que usuarios no tienen registro
+        for (String fecha : fechasUnicas) {
+            Set<String> usuariosConAsistencia = new HashSet<>();
+            
+            // Recopilar usuarios que si tienen asistencia en esta fecha
+            for (Asistencia asistencia : listaAsistencias) {
+                if (fecha.equals(asistencia.getFecha())) {
+                    usuariosConAsistencia.add(asistencia.getNombreUsuario());
+                }
+            }
+            
+            // Encontrar usuarios que no tienen asistencia en esta fecha
+            for (String usuario : usuariosUnicos) {
+                if (usuariosConAsistencia.contains(usuario)) {
+                    continue;
+                }
+                
+                contadorInasistencias++;
+                reporte.append("• Usuario: " + usuario + "\n");
+                reporte.append("  Fecha: " + fecha + "\n");
+                reporte.append("  Estado: INASISTENCIA\n\n");
+            }
+        }
+        
+        if (contadorInasistencias == 0) {
+            reporte.append("No se encontraron inasistencias en el periodo consultado.\n");
+            mostrarReporte("Reporte de Inasistencias", reporte.toString());
+            return;
+        }
+        
+        reporte.append("Total de inasistencias encontradas: " + contadorInasistencias + "\n");
+        mostrarReporte("Reporte de Inasistencias", reporte.toString());
+    }
+
+    // Metodo auxiliar para mostrar reportes en ventana
+    private void mostrarReporte(String titulo, String contenido) {
+        JFrame ventanaReporte = new JFrame(titulo);
+        ventanaReporte.setSize(700, 600);
+        ventanaReporte.setLocationRelativeTo(null);
+        ventanaReporte.setVisible(true);
+        
+        JTextArea txtAreaReporte = new JTextArea(contenido);
+        txtAreaReporte.setEditable(false);
+        txtAreaReporte.setFont(new Font("Courier New", Font.PLAIN, 12));
+        JScrollPane scrollPane = new JScrollPane(txtAreaReporte);
+        ventanaReporte.add(scrollPane);
+    }
+
     //Mostrar los datos en laabla de clientes
     public void mostrarClientesEnTabla(List<Clientes> listaClientes) {
         String matriz[][] = new String[listaClientes.size()][4];
@@ -1630,6 +1882,10 @@ public class VistaAdmin extends javax.swing.JFrame {
     private javax.swing.JTabbedPane VistaAdministrador;
     private javax.swing.JButton btnAgregarProveedor;
     private javax.swing.JButton btnReporte;
+    private javax.swing.JButton btnReporteAsistencia;
+    private javax.swing.JButton btnReporteAtrasos;
+    private javax.swing.JButton btnReporteSalidasAnticipadas;
+    private javax.swing.JButton btnReporteInasistencias;
     private javax.swing.JComboBox<String> comboBoxStock;
     private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBoxCargo;
