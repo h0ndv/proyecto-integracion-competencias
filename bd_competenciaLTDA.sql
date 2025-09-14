@@ -96,6 +96,17 @@ CREATE TABLE `tb_det_ventas` (
   PRIMARY KEY (`id_det_venta`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
+-- Tabla de control de asistencia
+CREATE TABLE `tb_asistencia` (
+  `id_asistencia` INT NOT NULL AUTO_INCREMENT,
+  `id_usuario` INT NOT NULL,
+  `fecha` DATE NOT NULL,
+  `hora_entrada` TIME,
+  `hora_salida` TIME,
+  `estado` ENUM('ENTRADA', 'COMPLETO') NOT NULL,
+  PRIMARY KEY (`id_asistencia`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
 -- =============================
 -- CLAVES FORANEAS
 -- =============================
@@ -140,6 +151,11 @@ ALTER TABLE tb_ventas
 ADD CONSTRAINT fk_venta_usuario 
 FOREIGN KEY (id_usuario) REFERENCES tb_usuarios(id_usuario);
 
+-- tb_asistencia -> tb_usuarios
+ALTER TABLE tb_asistencia
+ADD CONSTRAINT fk_asistencia_usuario 
+FOREIGN KEY (id_usuario) REFERENCES tb_usuarios(id_usuario);
+
 -- =============================
 -- INSERCION DE DATOS
 -- =============================
@@ -150,7 +166,7 @@ INSERT INTO tb_cargo (cargo, descripcion) VALUES
 ('Bodega', 'Encargado de bodega');
 
 INSERT INTO tb_usuarios (id_cargo, nombre, rut, correo, pin) VALUES
-(1, 'SEBA', '1234', 'aaa@gmail.com', '1234'),
+(1, 'Administrador', '1234', 'aaa@gmail.com', '1234'),
 (2, 'Vendedor', '12345', 'vendedor@gmail.com', '12345'),
 (3, 'Bodeguero', '123456', 'bodega@gmail.com', '123456');
 
@@ -173,3 +189,11 @@ INSERT INTO tb_productos (id_categoria, nombre, cantidad, precio) VALUES
 (3, 'Corsair Vengeance 16GB DDR4', 20, 7550),
 (4, 'EVGA 750W 80 Plus Gold', 0, 12000),
 (5, 'NZXT H510', 15, 9999);
+
+-- Datos de prueba ejemplo para tabla de asistencias
+INSERT INTO tb_asistencia (id_usuario, fecha, hora_entrada, hora_salida, estado) VALUES
+(1, '2024-01-15', '08:30:00', '17:30:00', 'COMPLETO'),
+(1, '2024-01-16', '08:45:00', '17:15:00', 'COMPLETO'),
+(1, '2024-01-17', '09:00:00', NULL, 'ENTRADA'),
+(1, '2024-01-18', '08:15:00', '18:00:00', 'COMPLETO'),
+(1, '2024-01-19', '08:30:00', NULL, 'ENTRADA');
