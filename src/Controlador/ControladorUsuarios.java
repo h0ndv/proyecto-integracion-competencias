@@ -1,7 +1,6 @@
 package Controlador;
 
 import Modelo.Usuarios;
-import Utils.ValidacionRut;
 
 import java.util.List;
 import javax.swing.JComboBox;
@@ -19,13 +18,11 @@ public class ControladorUsuarios {
 
     // Metodo para validar inicio de sesion
     public boolean validarUsuario(String rut, String pin) {
-        // Validar RUT
-        String errorRut = ValidacionRut.validarRutConMensaje(rut);
-        if (errorRut != null) {
-            JOptionPane.showMessageDialog(null, errorRut);
+        if (rut.isEmpty() || pin.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Debe completar todos los campos");
             return false;
         }
-        
+
         // Validar PIN (solo números)
         if (!pin.matches("[0-9]+")) {
             JOptionPane.showMessageDialog(null, "El PIN debe contener solo números");
@@ -45,6 +42,7 @@ public class ControladorUsuarios {
 
             // Si los datos son incorrectos se muestra un mensaje de error
             if (!esValido) {
+                JOptionPane.showMessageDialog(null, "Numero de cuenta o PIN incorrectos");
                 System.out.println("ControladorUsuarios.validarUsuario() - Datos incorrectos");
                 return false;
             }
@@ -60,12 +58,6 @@ public class ControladorUsuarios {
     public String validarUsuario(int cargo,String nombre, String rut, String clave, String correo) {
         if (nombre.isEmpty() || rut.isEmpty() || clave.isEmpty() || correo.isEmpty()) {
             return "Debe completar todos los campos";
-        }
-
-        // Validar RUT usando el nuevo validador
-        String errorRut = ValidacionRut.validarRutConMensaje(rut);
-        if (errorRut != null) {
-            return errorRut;
         }
 
         if (cargo != 1 && cargo != 2 && cargo != 3) {
@@ -133,6 +125,16 @@ public class ControladorUsuarios {
     // Controlador para obtener los usuarios
     public List<Usuarios> obtenerUsuarios() {
         return usuariosDAO.obtenerUsuarios();
+    }
+    
+    // Obtener ID del usuario actual
+    public int obtenerIdUsuario() {
+        return usuariosDAO.obtenerIdUsuario();
+    }
+    
+    // Obtener nombre del usuario actual
+    public String obtenerNombreUsuario() {
+        return usuariosDAO.obtenerNombreUsuario();
     }
 }
 

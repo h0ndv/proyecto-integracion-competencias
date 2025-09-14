@@ -34,15 +34,16 @@ public class UsuariosDAO {
             ResultSet resulSet = preparedStatement.executeQuery();
             
             // Si el usuario existe se inicia sesion
-            if (resulSet.next()) {
-                userLogged = resulSet.getString("rut");
-                nombre = resulSet.getString("nombre");
-                cargo = resulSet.getInt("id_cargo");
-                System.out.println("CuentaDAO.iniciarsesion() - Sesion iniciada. N° Cuenta: " + userLogged + " Nombre: " + nombre + " Cargo: " + cargo);
-            } else {
+            if (!resulSet.next()) {
                 System.out.println("CuentaDAO.iniciarSesion() - Datos incorrectos");
                 return false;
             }
+               
+            userLogged = resulSet.getString("rut");
+            nombre = resulSet.getString("nombre");
+            cargo = resulSet.getInt("id_cargo");
+            System.out.println("CuentaDAO.iniciarsesion() - Sesion iniciada. N° Cuenta: " + userLogged + " Nombre: " + nombre + " Cargo: " + cargo);
+            
             
             // Cerrar recursos pero no la conexión
             resulSet.close();
@@ -90,7 +91,6 @@ public class UsuariosDAO {
             // Setear los valroes de la consulta
             preparedStatement.setInt(1, usuarios.getId_cargo());
             preparedStatement.setString(2, usuarios.getNombre());
-            preparedStatement.setInt(3, usuarios.getRutUsuario());
             preparedStatement.setString(3, usuarios.getRutUsuario());
             preparedStatement.setInt(4, usuarios.getPin());
             preparedStatement.setString(5, usuarios.getCorreo());
@@ -230,6 +230,36 @@ public class UsuariosDAO {
             cargo = -1;
             System.out.println("UsuariosDAO.cerrarseion(): Sesion cerrada. N° Cuenta:" + userLogged);
         }
+    }
+    
+    // Obtener ID del usuario actual
+    public int obtenerIdUsuario() {
+        if (userLogged != null) {
+            String sql = "SELECT id_usuario FROM tb_usuarios WHERE rut = ?";
+            try {
+                Connection connection = Conexion.getInstance().getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, userLogged);
+                
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    int id = resultSet.getInt("id_usuario");
+                    resultSet.close();
+                    preparedStatement.close();
+                    return id;
+                }
+                resultSet.close();
+                preparedStatement.close();
+            } catch (SQLException e) {
+                System.out.println("Error al obtener ID del usuario: " + e.getMessage());
+            }
+        }
+        return -1;
+    }
+    
+    // Obtener nombre del usuario actual
+    public String obtenerNombreUsuario() {
+        return nombre;
     }
 // end
 }

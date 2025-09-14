@@ -27,6 +27,7 @@ public class Vista extends javax.swing.JFrame {
         txtNumeroCuenta = new javax.swing.JTextField();
         txtPIN = new javax.swing.JTextField();
         btnIniciarSesion = new javax.swing.JButton();
+        btnControlAsistencia = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -40,6 +41,15 @@ public class Vista extends javax.swing.JFrame {
         btnIniciarSesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnIniciarSesionActionPerformed(evt);
+            }
+        });
+
+        btnControlAsistencia.setText("Control Asistencia");
+        btnControlAsistencia.setBackground(new java.awt.Color(0, 102, 204));
+        btnControlAsistencia.setForeground(new java.awt.Color(255, 255, 255));
+        btnControlAsistencia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnControlAsistenciaActionPerformed(evt);
             }
         });
 
@@ -58,6 +68,7 @@ public class Vista extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnIniciarSesion)
+                    .addComponent(btnControlAsistencia)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(txtNumeroCuenta)
                         .addComponent(txtPIN, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE))))
@@ -80,8 +91,10 @@ public class Vista extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txtPIN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addComponent(btnIniciarSesion)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnControlAsistencia)
                 .addGap(49, 49, 49))
         );
 
@@ -95,14 +108,13 @@ public class Vista extends javax.swing.JFrame {
 
         boolean validarCuenta = controladorUsuarios.validarUsuario(numeroCuenta, pin);
             
-        if (validarCuenta != false) {
-            this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(null, "Numero de cuenta o PIN incorrectos");
+        if (validarCuenta == false) {
             System.out.println("TEST: vista iniciar sesion - Datos correctos " + numeroCuenta + " " + pin);
             limpiarCampos();
             return;
         }
+        
+        this.dispose();
 
         // Abrir la vista segun el cargo del usuario
         int cargo = controladorUsuarios.obtenerCargo();
@@ -121,6 +133,26 @@ public class Vista extends javax.swing.JFrame {
                 System.out.println("Vista abierta:" + cargo);
                 break;
         }
+    }
+
+    // Boton control de asistencia
+    private void btnControlAsistenciaActionPerformed(java.awt.event.ActionEvent evt) {                                                 
+        numeroCuenta = txtNumeroCuenta.getText().trim();
+        pin = txtPIN.getText().trim();
+
+        boolean validarCuenta = controladorUsuarios.validarUsuario(numeroCuenta, pin);
+            
+        if (validarCuenta == false) {
+            limpiarCampos();
+            return;
+        }
+        
+        // Obtener ID del usuario y nombre
+        int idUsuario = controladorUsuarios.obtenerIdUsuario();
+        String nombreUsuario = controladorUsuarios.obtenerNombreUsuario();
+        
+        this.dispose();
+        new VistaAsistencia(idUsuario, nombreUsuario).setVisible(true);
     }
 
     // Metodo para limpiar campos
@@ -163,6 +195,7 @@ public class Vista extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIniciarSesion;
+    private javax.swing.JButton btnControlAsistencia;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
