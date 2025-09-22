@@ -7,9 +7,9 @@ public class Controlador {
     // Metodo para verificar si el campo esta vacio
     public static boolean verificarCampoVacio(String mensaje) {
         if (mensaje.isEmpty()) {
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     // Metodo para validar ingreso solo numeros y si es mayor a 0

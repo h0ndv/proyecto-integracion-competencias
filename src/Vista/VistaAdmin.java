@@ -81,7 +81,6 @@ public class VistaAdmin extends javax.swing.JFrame {
         btnReporteAsistencia = new javax.swing.JButton();
         btnReporteAtrasos = new javax.swing.JButton();
         btnReporteSalidasAnticipadas = new javax.swing.JButton();
-        btnReporteInasistencias = new javax.swing.JButton();
         PanelPersonal = new javax.swing.JPanel();
         TxtTitulo = new javax.swing.JLabel();
         LabelNombrePersonal = new javax.swing.JLabel();
@@ -164,7 +163,7 @@ public class VistaAdmin extends javax.swing.JFrame {
         jMenuItem1.setText("jMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(658, 518));
+        setPreferredSize(new java.awt.Dimension(900, 600));
 
         VistaAdministrador.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -248,13 +247,6 @@ public class VistaAdmin extends javax.swing.JFrame {
             }
         });
 
-        btnReporteInasistencias.setText("Reporte Inasistencias");
-        btnReporteInasistencias.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnReporteInasistenciasActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout PanelinicioLayout = new javax.swing.GroupLayout(Panelinicio);
         Panelinicio.setLayout(PanelinicioLayout);
         PanelinicioLayout.setHorizontalGroup(
@@ -288,8 +280,6 @@ public class VistaAdmin extends javax.swing.JFrame {
                         .addComponent(btnReporteAtrasos)
                         .addGap(18, 18, 18)
                         .addComponent(btnReporteSalidasAnticipadas)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnReporteInasistencias)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnReporte)
                         .addGap(53, 53, 53)))
@@ -313,8 +303,7 @@ public class VistaAdmin extends javax.swing.JFrame {
                         .addComponent(btnReporte)
                         .addComponent(btnReporteAsistencia)
                         .addComponent(btnReporteAtrasos)
-                        .addComponent(btnReporteSalidasAnticipadas)
-                        .addComponent(btnReporteInasistencias))
+                        .addComponent(btnReporteSalidasAnticipadas))
                     .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(PanelTablaProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -593,7 +582,7 @@ public class VistaAdmin extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(BtnModificarProducto))
                     .addComponent(ScrollTablaProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(107, Short.MAX_VALUE))
+                .addContainerGap(201, Short.MAX_VALUE))
         );
 
         VistaAdministrador.addTab("Stock De Productos", PanelProductos);
@@ -713,7 +702,7 @@ public class VistaAdmin extends javax.swing.JFrame {
                     .addComponent(BtnAgregarCliente)
                     .addComponent(BtnEliminarCliente)
                     .addComponent(BtnModificarCliente))
-                .addContainerGap(147, Short.MAX_VALUE))
+                .addContainerGap(241, Short.MAX_VALUE))
         );
 
         VistaAdministrador.addTab("Registro Clientes", PanelClientes);
@@ -825,7 +814,7 @@ public class VistaAdmin extends javax.swing.JFrame {
                     .addComponent(BtnEliminarProveedor)
                     .addComponent(BtnModificarProveedor)
                     .addComponent(btnAgregarProveedor))
-                .addContainerGap(196, Short.MAX_VALUE))
+                .addContainerGap(290, Short.MAX_VALUE))
         );
 
         VistaAdministrador.addTab("Registro Proveedores", PanelProveedores);
@@ -943,14 +932,14 @@ public class VistaAdmin extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(VistaAdministrador, javax.swing.GroupLayout.PREFERRED_SIZE, 626, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(VistaAdministrador, javax.swing.GroupLayout.PREFERRED_SIZE, 880, Short.MAX_VALUE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(VistaAdministrador, javax.swing.GroupLayout.PREFERRED_SIZE, 506, Short.MAX_VALUE)
+                .addComponent(VistaAdministrador, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1162,11 +1151,11 @@ public class VistaAdmin extends javax.swing.JFrame {
 
         try {
             if (fila != -1) {
-                int rutUsuario = Integer.parseInt(TablaPersonal.getValueAt(fila, 1).toString());
+                String rutUsuario = TablaPersonal.getValueAt(fila, 1).toString();
 
                 // Crear objeto tipo usuario
                 Usuarios usuario = new Usuarios();
-                usuario.setRutUsuario(String.valueOf(rutUsuario));
+                usuario.setRutUsuario(rutUsuario);
 
                 // Eliminar usuario de la base de datos
                 controladorUsuarios.eliminarUsuario(usuario);
@@ -1397,7 +1386,7 @@ public class VistaAdmin extends javax.swing.JFrame {
 
         // Agregar los datos de las asistencias
         for (int i = 0; i < listaAsistencias.size(); i++) {
-            reporte.append("Usuario: " + listaAsistencias.get(i).getNombreUsuario() + " - " + listaAsistencias.get(i).getFecha() + " - " + listaAsistencias.get(i).getHoraEntrada() + " - " + listaAsistencias.get(i).getHoraSalida() + " - " + listaAsistencias.get(i).getEstado() + "\n");
+            reporte.append("Usuario: " + listaAsistencias.get(i).getNombreUsuario() + " - " + listaAsistencias.get(i).getFecha() + " - " + listaAsistencias.get(i).getHoraEntrada() + " - " + listaAsistencias.get(i).getHoraSalida() + "\n");
         }
         
         // Mostrar el reporte en una ventana JFRAME
@@ -1437,8 +1426,8 @@ public class VistaAdmin extends javax.swing.JFrame {
             int hora = Integer.parseInt(horaEntrada[0]);
             int minutos = Integer.parseInt(horaEntrada[1]);
             
-            // Verificar si llego despues de las 9:30 AM
-            if (hora < 9 || (hora == 9 && minutos <= 30)) {
+            // Verificar si llego despues de las 9:30
+            if (hora <= 9 && (hora != 9 || minutos <= 30)) {
                 continue;
             }
             
@@ -1486,7 +1475,7 @@ public class VistaAdmin extends javax.swing.JFrame {
             int minutos = Integer.parseInt(horaSalida[1]);
             
             // Verificar si salio antes de las 17:30 PM
-            if (hora >= 17 && (hora > 17 || minutos >= 30)) {
+            if (hora >= 17 && (hora != 17 || minutos >= 30)) {
                 continue;
             }
             
@@ -1885,7 +1874,6 @@ public class VistaAdmin extends javax.swing.JFrame {
     private javax.swing.JButton btnReporteAsistencia;
     private javax.swing.JButton btnReporteAtrasos;
     private javax.swing.JButton btnReporteSalidasAnticipadas;
-    private javax.swing.JButton btnReporteInasistencias;
     private javax.swing.JComboBox<String> comboBoxStock;
     private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBoxCargo;
